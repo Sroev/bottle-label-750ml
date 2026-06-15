@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thornbury Marlborough Sauvignon Blanc</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #222;
+      background: #fff;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Language selector */
+    .lang-selector {
+      position: relative;
+      padding: 10px 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .lang-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .lang-button::after {
+      content: '▾';
+      margin-left: 4px;
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 44px;
+      left: 16px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 100;
+      min-width: 180px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .lang-dropdown.open {
+      display: block;
+    }
+
+    .lang-dropdown a {
+      display: block;
+      padding: 8px 14px;
+      text-decoration: none;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .lang-dropdown a:hover {
+      background: #f5f5f5;
+    }
+
+    .lang-dropdown a.active {
+      font-weight: 600;
+      color: #000;
+    }
+
+    /* Wine header */
+    .wine-header {
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .wine-name {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .wine-origin {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    /* Specs grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+
+    .spec-value {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Sections */
+    .section {
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .ingredients-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    /* Nutrition table */
+    .nutrition-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .nutrition-table .header-row td {
+      font-size: 11px;
+      color: #888;
+      padding-bottom: 8px;
+      text-align: right;
+    }
+
+    .nutrition-table .header-row td:first-child {
+      text-align: left;
+    }
+
+    .nutrition-table tr {
+      border-top: 1px solid #eee;
+    }
+
+    .nutrition-table td {
+      padding: 7px 0;
+      font-size: 13px;
+    }
+
+    .nutrition-table td:last-child {
+      text-align: right;
+      color: #555;
+    }
+
+    .nutrition-table .sub-row td {
+      font-size: 12px;
+      color: #777;
+      padding-left: 12px;
+    }
+
+    .nutrition-table .sub-row td:last-child {
+      color: #777;
+    }
+
+    /* Privacy section */
+    .privacy-section {
+      padding: 16px;
+    }
+
+    .privacy-note {
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    .privacy-note a {
+      color: #555;
+    }
+
+    .privacy-h2 {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 16px 0 8px;
+      color: #222;
+    }
+
+    .privacy-h3 {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 14px 0 6px;
+      color: #333;
+    }
+
+    .privacy-p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    .privacy-ul {
+      padding-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    .privacy-ul li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    .contact-block {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #444;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Language selector -->
+  <div class="lang-selector">
+    <button class="lang-button" onclick="toggleLang()">🌐 български</button>
+    <div class="lang-dropdown" id="langDropdown">
+      <a href="#" class="active">български</a>
+      <a href="#">Čeština</a>
+      <a href="#">Dansk</a>
+      <a href="#">Deutsch</a>
+      <a href="#">Ελληνική</a>
+      <a href="#">English</a>
+      <a href="#">Español</a>
+      <a href="#">Eesti</a>
+      <a href="#">Suomi</a>
+      <a href="#">Français</a>
+      <a href="#">Hrvatski</a>
+      <a href="#">Magyar</a>
+      <a href="#">Italia</a>
+      <a href="#">Lietuvių kalba</a>
+      <a href="#">Latviešu</a>
+      <a href="#">Maltese</a>
+      <a href="#">Nederlands</a>
+      <a href="#">Polska</a>
+      <a href="#">Português</a>
+      <a href="#">Românesc</a>
+      <a href="#">Slovenčina</a>
+      <a href="#">Slovenščina</a>
+      <a href="#">Svenska</a>
+    </div>
+  </div>
+
+  <!-- Wine header -->
+  <div class="wine-header">
+    <div class="wine-name">Thornbury Marlborough Sauvignon Blanc 2024</div>
+    <div class="wine-origin">НОВА ЗЕЛАНДИЯ, MARLBOROUGH</div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <span class="spec-label">Категория</span>
+        <span class="spec-value">Вино</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Обем</span>
+        <span class="spec-value">750ml</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Алкохол</span>
+        <span class="spec-value">12,5% vol</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Цвят</span>
+        <span class="spec-value">Бял</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Остатъчна захар</span>
+        <span class="spec-value">Сухо</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Сорт грозде</span>
+        <span class="spec-value">Sauvignon Blanc</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Производител</span>
+        <span class="spec-value">Indevin Limited</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ingredients -->
+  <div class="section">
+    <div class="section-title">Съставки</div>
+    <p class="ingredients-text">
+      Грозде, захар, концентрирана гроздова мъст, консерванти и антиоксиданти: сулфити, L-аскорбинова киселина; стабилизатор: манопротеини от дрожди; регулатор на киселинността: млечна киселина. Бутилирано в защитна атмосфера.
+    </p>
+  </div>
+
+  <!-- Nutrition -->
+  <div class="section">
+    <div class="section-title">Информация за храненето</div>
+    <table class="nutrition-table">
+      <tr class="header-row">
+        <td></td>
+        <td>в 100ml</td>
+      </tr>
+      <tr>
+        <td>Енергийна стойност</td>
+        <td>309 kJ / 74 kcal</td>
+      </tr>
+      <tr>
+        <td>Мазнини</td>
+        <td>&lt;0,5 g</td>
+      </tr>
+      <tr class="sub-row">
+        <td>От които наситени мастни киселини</td>
+        <td>&lt;0,1 g</td>
+      </tr>
+      <tr>
+        <td>Въглехидрати</td>
+        <td>0,7 g</td>
+      </tr>
+      <tr class="sub-row">
+        <td>От които захари</td>
+        <td>0,3 g</td>
+      </tr>
+      <tr>
+        <td>Белтъци</td>
+        <td>&lt;0,5 g</td>
+      </tr>
+      <tr>
+        <td>Сол</td>
+        <td>&lt;0,01 g</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Privacy -->
+  <div class="privacy-section">
+    <div class="section-title">Политика за поверителност</div>
+    <p class="privacy-note">
+      Това е автоматичен превод. Моля, консултирайте се с <a href="#">оригиналната английска версия</a>.
+    </p>
+
+    <div class="privacy-h2">Обща информация</div>
+    <p class="privacy-p">
+      Следната информация предоставя лесен преглед на това как обработваме вашите лични данни, когато посещавате някой от E-labels на Bottlebooks. Личните данни включват всяка информация, която може да бъде свързана с вас лично, като вашето име, адрес, имейл адрес, потребителско поведение или IP адрес.
+    </p>
+
+    <div class="privacy-h2">Събиране на данни на този уебсайт</div>
+
+    <div class="privacy-h3">Кой е отговорен за събирането на данни на този уебсайт?</div>
+    <p class="privacy-p">Отговорният орган за обработка на данни на този уебсайт е:</p>
+    <div class="contact-block">
+      Bottlebooks GmbH<br>
+      Schellingstr. 109a<br>
+      80798 Мюнхен, Германия<br>
+      Телефон: +351 308 803 904<br>
+      Имейл: contact@bottlebooks.com
+    </div>
+    <p class="privacy-p">Обработваме лични данни в съответствие с Общия регламент за защита на данните (GDPR) и други приложими закони за защита на данните.</p>
+
+    <div class="privacy-h3">Как събираме вашите данни?</div>
+    <p class="privacy-p">Данните се събират автоматично или с вашето съгласие от нашите IT системи, когато посещавате уебсайта. Това включва предимно технически данни като:</p>
+    <ul class="privacy-ul">
+      <li>Език</li>
+      <li>IP адрес</li>
+      <li>Местоположение на IP адреса</li>
+      <li>Дата и час на заявката към сървъра</li>
+      <li>Съдържание на заявката</li>
+      <li>Статус на достъп/HTTP статус код</li>
+      <li>Количество прехвърлени данни</li>
+      <li>Предходно посетена страница</li>
+      <li>Тип и версия на браузъра</li>
+      <li>Операционна система</li>
+      <li>Refer URL (Предходно посетена страница)</li>
+      <li>Име на хоста на достъпващия компютър</li>
+    </ul>
+    <p class="privacy-p">Тези данни се събират автоматично, веднага след като влезете в нашия уебсайт.</p>
+
+    <div class="privacy-h3">Какво ще кажете за бисквитки или проследяване?</div>
+    <p class="privacy-p">Не се използват бисквитки или други технологии за проследяване за предоставяне на E-labels на Bottlebooks.</p>
+
+    <div class="privacy-h3">За какво използваме вашите данни?</div>
+    <p class="privacy-p">Използваме вашите данни за следните цели:</p>
+    <ul class="privacy-ul">
+      <li>Гарантиране на безпроблемното предоставяне на уебсайта</li>
+      <li>Осигуряване на версията на E-label на правилния език и за правилната държава</li>
+    </ul>
+
+    <div class="privacy-h3">Какви права имате по отношение на вашите данни?</div>
+    <p class="privacy-p">Имате право по всяко време да:</p>
+    <ul class="privacy-ul">
+      <li>Получите безплатна информация за произхода, получателя и целта на съхраняваните ви лични данни</li>
+      <li>Коригирате или изтриете тези данни</li>
+      <li>Оттеглите вашето съгласие за обработка на данни</li>
+      <li>Ограничите обработката на вашите лични данни при определени обстоятелства</li>
+      <li>Подадете жалба до съответния надзорен орган</li>
+    </ul>
+    <p class="privacy-p">Ако имате въпроси относно защитата на данните, можете да се свържете с нас по всяко време.</p>
+
+    <div class="privacy-h2">Обща информация и задължителни сведения</div>
+
+    <div class="privacy-h3">Защита на данните</div>
+    <p class="privacy-p">Ние приемаме защитата на вашите лични данни много сериозно. Вашите данни ще бъдат третирани поверително и в съответствие със законовите разпоредби за защита на данните и тази декларация за защита на данните.</p>
+    <p class="privacy-p">Моля, имайте предвид, че предаването на данни през Интернет (например при комуникация по имейл) може да има пропуски в сигурността. Пълната защита срещу достъп от трети страни не е възможна.</p>
+
+    <div class="privacy-h3">Период на съхранение</div>
+    <p class="privacy-p">Вашите лични данни ще останат при нас, докато целта на обработката престане да се прилага. Освен ако няма законови изисквания за съхранение, вашите данни ще бъдат изтрити.</p>
+
+    <div class="privacy-h3">Вашите права съгласно GDPR</div>
+    <ul class="privacy-ul">
+      <li>Право на информация: Получаване на информация за съхраняваните лични данни</li>
+      <li>Право на корекция и изтриване</li>
+      <li>Право на ограничаване на обработката</li>
+      <li>Право на възражение (чл. 21 GDPR)</li>
+      <li>Право на преносимост на данните</li>
+      <li>Право на подаване на жалба до съответния надзорен орган</li>
+    </ul>
+  </div>
+
+  <script>
+    function toggleLang() {
+      document.getElementById('langDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lang-selector')) {
+        document.getElementById('langDropdown').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
