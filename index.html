@@ -25,6 +25,8 @@
       position: relative;
       padding: 10px 16px;
       border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .lang-button {
@@ -49,7 +51,7 @@
       display: none;
       position: absolute;
       top: 44px;
-      left: 16px;
+      right: 16px;
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 4px;
@@ -192,6 +194,41 @@
     /* Privacy section */
     .privacy-section {
       padding: 16px;
+    }
+
+    .privacy-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 0;
+    }
+
+    .privacy-toggle-btn .section-title {
+      margin-bottom: 0;
+    }
+
+    .privacy-toggle-btn .chevron {
+      font-size: 16px;
+      color: #888;
+      transition: transform 0.2s;
+    }
+
+    .privacy-toggle-btn.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .privacy-content {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .privacy-content.open {
+      display: block;
     }
 
     .privacy-note {
@@ -364,7 +401,11 @@
 
   <!-- Privacy -->
   <div class="privacy-section">
-    <div class="section-title">Политика за поверителност</div>
+    <button class="privacy-toggle-btn" onclick="togglePrivacy(this)" aria-expanded="false">
+      <span class="section-title">Политика за поверителност</span>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="privacy-content" id="privacyContent">
     <p class="privacy-note">
       Това е автоматичен превод. Моля, консултирайте се с <a href="#">оригиналната английска версия</a>.
     </p>
@@ -444,9 +485,17 @@
       <li>Право на преносимост на данните</li>
       <li>Право на подаване на жалба до съответния надзорен орган</li>
     </ul>
+    </div><!-- /privacy-content -->
   </div>
 
   <script>
+    function togglePrivacy(btn) {
+      const content = document.getElementById('privacyContent');
+      const isOpen = content.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    }
+
     function toggleLang() {
       document.getElementById('langDropdown').classList.toggle('open');
     }
